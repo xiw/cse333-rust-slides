@@ -1,7 +1,7 @@
 Slides for a presentation on Rust for UW's systems programming class (CSE 333).
 
-To view the presentation, run `python3 web.py` and navigate to localhost:8080
-in a browser.
+To view the presentation, run `python3 web.py` and navigate to
+`http://localhost:8080/reveal/index.html` in a browser.
 
 The code examples (both Rust and C++) can be edited during the presentation.
 Edit the code and press Ctrl+Enter to recompile and run the new version.
