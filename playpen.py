@@ -3,6 +3,7 @@
 import subprocess
 
 def execute(version, command, arguments, data=None):
+    """
     with subprocess.Popen(("playpen",
                            "root-" + version,
                            "--mount-proc",
@@ -13,6 +14,11 @@ def execute(version, command, arguments, data=None):
                            "--memory-limit=128",
                            "--",
                            command) + arguments,
+                           stdin=subprocess.PIPE,
+                           stdout=subprocess.PIPE,
+                           stderr=subprocess.STDOUT) as p:
+    """
+    with subprocess.Popen((command,) + arguments,
                            stdin=subprocess.PIPE,
                            stdout=subprocess.PIPE,
                            stderr=subprocess.STDOUT) as p:

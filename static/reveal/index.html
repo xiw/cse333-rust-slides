@@ -1,0 +1,1044 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>reveal.js - The HTML Presentation Framework</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+        <style>
+            iframe.code {
+                margin: 10px;
+                width: 90%;
+                height: 500px;
+            }
+
+            div.editor-max {
+                /* display: flex; */
+                /* align-items: strectch; */
+            }
+
+            div.editor-max > iframe.code {
+                width: 100%;
+                height: 100%;
+                /* flex-grow: 1; */
+            }
+
+            div.split {
+                height: 500px;
+                display: flex;
+            }
+
+            div.split.stack {
+                flex-flow: column;
+            }
+
+            div.split > * {
+                flex-grow: 1;
+                flex-shrink: 1;
+                flex-basis: 0px;
+                width: auto;
+                height: auto;
+            }
+        </style>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+
+
+
+
+<section>
+    <h1>The Language<br>of the Future</h1>
+    <big>Stuart Pernsteiner</big>
+</section>
+
+<section>
+    <img src="http://www.rust-lang.org/logos/rust-logo-512x512.png"
+         style='background-color: black'>
+    <div style='font-size: 130%'>
+        Rust - <a href='http://rust-lang.org'>http://rust-lang.org</a>
+    </div>
+
+    <aside data-markdown class='notes'>
+        interesting things about rust:
+
+         - systems language
+         - modern language features
+         - emphasis on safety
+
+
+        tradeoff: systems languages (C/C++) get performance and control, safe
+        languages avoid large classes of bugs.  Rust does both.
+    </aside>
+</section>
+
+
+
+<section>
+
+<section>
+    <h1>Rust Basics</h1>
+    <div class='split'>
+    <code class='live rust'>
+        #
+
+
+        fn increment(n: i32) -&gt; i32 {
+          n + 1
+        }
+
+        fn main() {
+          let x = 41;
+          println!("{} + 1 = {}",
+                   x, increment(x));
+
+        }
+    </code>
+
+    <code class='live cpp'>
+        #include &lt;stdio.h&gt;
+
+        int increment(int n) {
+          return n + 1;
+        }
+
+        int main() {
+          int x = 41;
+          printf("%d + 1 = %d\n",
+                 x, increment(x));
+          return 0;
+        }
+    </code>
+    </div>
+</section>
+
+<section>
+    <h1>Rust Types</h1>
+    <ul>
+        <li>
+            <code>stdint</code>-like integers:
+            <code>u8</code>/<code>i8</code> .. <code>u64</code>/<code>i64</code>,
+            <code>usize</code>/<code>isize</code>
+        </li>
+        <li>Floating point: <code>f32</code>/<code>f64</code></li>
+        <li>Tuples: <code>(u32, u64)</code>, <code>(f32, f32, f32)</code></li>
+        <li>Unit: <code>()</code> - like C/C++ <code>void</code></li>
+        <li>Pointers, strings, arrays...</li>
+    </ul>
+</section>
+
+<section>
+    <h1>Hello 42</h1>
+    <div class='split'>
+    <code class='live rust'>
+        #
+
+
+        fn main() {
+          let s: &amp;str = "Hello";
+          let x: u32 = 42;
+
+          println!("{}, {}!", s, x);
+
+        }
+    </code>
+
+    <code class='live cpp'>
+        #include &lt;stdio.h&gt;
+
+        int main() {
+          const char *s = "Hello";
+          int x = 42;
+
+          printf("%s, %d!\n", s, x);
+          return 0;
+        }
+    </code>
+    </div>
+</section>
+
+<section>
+    <h1>Functions</h1>
+    <div class='split'>
+    <code class='live rust'>
+        #
+
+
+        fn increment(x: u32) -&gt; u32 {
+          x + 1
+        }
+
+        fn main() {
+          println!("1 + 1 is {}",
+                   increment(1));
+
+        }
+    </code>
+
+    <code class='live cpp'>
+        #include &lt;stdio.h&gt;
+
+        int increment(int x) {
+          return x + 1;
+        }
+
+        int main() {
+          printf("1 + 1 is %d\n",
+                 increment(1));
+          return 0;
+        }
+    </code>
+    </div>
+</section>
+
+<section>
+    <h1>Structs</h1>
+    <div class='split'>
+    <code class='live rust'>
+        #
+
+
+        struct Point {
+          x: u32,
+          y: u32,
+        }
+
+        fn main() {
+          let p =
+            Point { x: 10, y: 20 };
+
+          println!("p = {}, {}!",
+                   p.x, p.y);
+
+
+        }
+    </code>
+
+    <code class='live cpp'>
+        #include &lt;stdio.h&gt;
+
+        struct Point {
+          unsigned int x;
+          unsigned int y;
+        };
+
+        int main() {
+          Point p = { 10, 20 };
+
+
+          printf("p = %d, %d!\n",
+                 p.x, p.y);
+
+          return 0;
+        }
+    </code>
+    </div>
+</section>
+
+<section>
+    <h1>Type Inference</h1>
+    <code class='live rust'>
+        fn main() {
+            let s = "Hello";
+            let x = 42;
+          
+            println!("{}, {}!", s, x);
+        }
+    </code>
+</section>
+
+</section>
+
+
+
+
+<section>
+
+<section>
+    <h1>Structs</h1>
+    <div class='split'>
+    <code class='live rust'>
+        struct Point {
+          x: u32,
+          y: u32,
+        }
+
+        fn main() {
+            let p = Point { x: 10, y: 20 };
+            println!("p = {}, {}", p.x, p.y);
+        }
+    </code>
+</section>
+
+<section>
+    <h1>Structs</h1>
+    <div class='split'>
+    <code class='live rust'>
+        struct Point {
+          x: u32,
+          y: u32,
+        }
+
+        fn main() {
+            let p = Point { x: 10, y: 20 };
+            let n = 0;
+            println!("&amp;p.x = {:p}", &amp;p.x);
+            println!("&amp;n   = {:p}", &amp;n);
+        }
+    </code>
+</section>
+
+<section>
+    <h1>Tuples</h1>
+    <div class='split'>
+    <code class='live rust'>
+        fn checked_increment(x: u8) -&gt; (u8, bool) {
+            if x == 255 {
+                (0, true)
+            } else {
+                (x + 1, false)
+            }
+        }
+
+        fn main() {
+            let x = 255;
+            let (sum, ok) = checked_increment(x);
+            println!("{} + 1 = {} (overflowed? {})",
+                     x, sum, ok);
+        }
+    </code>
+</section>
+
+<section>
+    <h1>Enums</h1>
+    <code class='live rust'>
+        enum Color {
+            RED,
+            GREEN,
+            BLUE,
+        }
+
+        fn main() {
+            println!("RED =   {}", Color::RED as u32);
+            println!("GREEN = {}", Color::GREEN as u32);
+            println!("BLUE =  {}", Color::BLUE as u32);
+        }
+    </code>
+</section>
+
+<section>
+    <h1>Enums with Data</h1>
+    <code class='live rust no-exec'>
+        enum Number {
+            Real(f32),
+            Complex(f32, f32),
+        }
+
+        fn main() {
+            let r = Number::Real(50.0);
+            let c = Number::Complex(10.0, 20.0);
+        }
+    </code>
+</section>
+
+<section>
+    <h1>Pattern Matching</h1>
+    <code class='live rust'>
+        enum Number {
+            Real(f32),
+            Complex(f32, f32),
+        }
+
+        fn real_part(n: Number) -&gt; f32 {
+            match n {
+                Number::Real(a) =&gt; a,
+                Number::Complex(a, _) =&gt; a,
+            }
+        }
+
+        fn main() {
+            let n = Number::Complex(10.0, 20.0);
+            println!("{}", real_part(n));
+        }
+    </code>
+</section>
+
+<section>
+    <h1>Exhaustiveness</h1>
+    <code class='live rust no-exec'>
+        enum Color { RED, GREEN, BLUE }
+
+        fn coolness(c: Color) -&gt; i32 {
+            match c {
+                Color::BLUE =&gt; 100,
+                Color::RED =&gt; 0,
+            }
+        }
+
+        fn main() {
+            println!("RED:   {}", coolness(Color::RED));
+            println!("GREEN: {}", coolness(Color::GREEN));
+            println!("BLUE:  {}", coolness(Color::BLUE));
+        }
+    </code>
+</section>
+
+</section>
+
+
+
+<!-- iterators -->
+
+<section>
+
+<section>
+    <h1>Pointers</h1>
+    <code class='live rust'>
+        fn main() {
+            let x = 7;
+            let ptr: &amp;i32 = &amp;x;
+            println!("*ptr = {}", *ptr);
+        }
+    </code>
+</section>
+
+<section>
+    <h1>Pointer Bugs</h1>
+    <code class='live cpp'>
+        #include &lt;stdio.h&gt;
+
+        void print_ptr(int* ptr) {
+            printf("*ptr = %d\n", *ptr);
+        }
+
+        int main() {
+            print_ptr(NULL);
+        }
+    </code>
+</section>
+
+<section>
+    <h1>Pointer Bugs</h1>
+    <code class='live cpp'>
+        #include &lt;stdio.h&gt;
+
+        void print_ptr(int *ptr) {
+            printf("*ptr = %d\n", *ptr);
+        }
+
+        int main() {
+            int *ptr = new int(7);
+            print_ptr(ptr);
+            delete ptr;
+            print_ptr(ptr);
+        }
+    </code>
+</section>
+
+<section>
+    <h1>Pointer Bugs</h1>
+    <code class='live cpp no-exec'>
+        #include &lt;vector&gt;
+        #include &lt;stdio.h&gt;
+
+        int main() {
+            std::vector&lt;int&gt; v { 1, 2, 3 };
+            for (auto I = v.begin(), E = v.end(); I != E; ++I) {
+                v.push_back(*I);
+            }
+            for (auto I = v.begin(), E = v.end(); I != E; ++I) {
+                printf("%d ", *I);
+            }
+            printf("\n");
+        }
+    </code>
+</section>
+
+<section>
+    <h1>Pointers</h1>
+    <code class='live rust no-exec'>
+        fn print_ptr(ptr: &amp;u32) {
+            println!("*ptr = {}", *ptr),
+        }
+
+        fn main() {
+            print_ptr( ??? );
+        }
+    </code>
+</section>
+
+<section>
+    <h1>Pointers</h1>
+    <code class='live rust'>
+        //  enum Option&lt;T&gt; {
+        //      Some(T),
+        //      None,
+        //  }
+
+        fn print_ptr(opt_ptr: Option&lt;&amp;u32&gt;) {
+            match opt_ptr {
+                Some(ptr) =&gt; println!("*ptr = {}", *ptr),
+                None =&gt; println!("nothing"),
+            }
+        }
+
+        fn main() {
+            print_ptr(Some(&amp;7));
+            print_ptr(None);
+        }
+    </code>
+</section>
+
+<section>
+    <h1>Allocation</h1>
+    <code class='live rust'>
+        fn print_ptr(ptr: &amp;u32) {
+            println!("*ptr = {}", *ptr);
+        }
+
+        fn main() {
+            let p: Box&lt;u32&gt; = Box::new(7);
+            print_ptr(&amp;*p);
+        }
+    </code>
+</section>
+
+<section>
+    <h1>Allocation</h1>
+    <code class='live rust no-exec'>
+        fn print_ptr(ptr: &amp;u32) {
+            println!("*ptr = {}", *ptr);
+        }
+
+        fn main() {
+            let p: Box&lt;u32&gt; = Box::new(7);
+            print_ptr(&amp;*p);
+            drop(p);
+            print_ptr(&amp;*p);
+        }
+    </code>
+</section>
+
+<section>
+    <h1>Iterators</h1>
+    <code class='live rust no-exec'>
+        fn main() {
+            let mut v = vec![1, 2, 3];
+            for x in v.iter() {
+                v.push(*x);
+            }
+            for x in v.iter() {
+                print!("{} ", *x);
+            }
+        }
+    </code>
+</section>
+
+<section>
+    <h1>Pointers</h1>
+    <code class='live rust no-exec'>
+        //  enum Option&lt;T&gt; {
+        //      Some(T),
+        //      None,
+        //  }
+
+        fn main() {
+            let mut opt = Some(7);
+
+            let ptr = opt.as_ref().unwrap();
+            println!("*ptr = {}", *ptr);
+            opt = None;
+            println!("*ptr = {}", *ptr);
+        }
+    </code>
+</section>
+
+<section>
+    <h1>Unsafe Code</h1>
+    <code class='live rust no-exec'>
+        fn main() {
+            unsafe {
+                let mut ptr: *const u8 = std::mem::transmute(&amp;main);
+                for i in 0..16 {
+                    print!("{:x} ", *ptr.offset(i));
+                }
+            }
+        }
+    </code>
+</section>
+
+</section>
+
+
+
+<section>
+
+<!-- macros -->
+<!-- typechecked generics -->
+
+<section>
+    <h1><span>Macros</span></h1>
+    <div class='split'>
+    <code class='live rust'>
+        #
+
+
+        macro_rules! swap {
+          ($a:expr, $b:expr) =&gt; {{
+            let tmp = $a;
+            $a = $b;
+            $b = tmp;
+          }};
+        }
+
+        fn main() {
+          let mut x = 1;
+          let mut y = 2;
+          swap!(x, y);
+          println!("{} {}", x, y);
+        }
+    </code>
+    <code class='live cpp'>
+        #include &lt;stdio.h&gt;
+
+        #define SWAP(a, b)  \
+          do {              \
+            int tmp = a;    \
+            a = b;          \
+            b = tmp;        \
+          } while(0)
+
+
+        int main() {
+          int x = 1;
+          int y = 2;
+          SWAP(x, y);
+          printf("%d %d", x, y);
+        }
+    </code>
+    </div>
+</section>
+
+<section>
+    <h1><span>Macros</span></h1>
+    <div class='split'>
+    <code class='live rust'>
+        #
+
+
+        macro_rules! swap {
+          ($a:expr, $b:expr) =&gt; {{
+            let tmp = $a;
+            $a = $b;
+            $b = tmp;
+          }};
+        }
+
+        fn main() {
+          let mut x = 1;
+          let mut tmp = 2;
+          swap!(x, tmp);
+          println!("{} {}", x, tmp);
+        }
+    </code>
+    <code class='live cpp'>
+        #include &lt;stdio.h&gt;
+
+        #define SWAP(a, b)  \
+          do {              \
+            int tmp = a;    \
+            a = b;          \
+            b = tmp;        \
+          } while(0)
+
+
+        int main() {
+          int x = 1;
+          int tmp = 2;
+          SWAP(x, tmp);
+          printf("%d %d", x, tmp);
+        }
+    </code>
+    </div>
+</section>
+
+<section>
+    <h1><span>Generics</span></h1>
+    <code class='live cpp'>
+        #include &lt;stdio.h&gt;
+
+        template&lt;typename T&gt;
+        T twice(T x) {
+            return x + x;
+        }
+
+        int main() {
+            printf("%d\n", twice(7));
+        }
+    </code>
+</section>
+
+<section>
+    <h1><span>Generics</span></h1>
+    <code class='live cpp'>
+        #include &lt;stdio.h&gt;
+
+        template&lt;typename T&gt;
+        T twice(T x) {
+            return x + x;
+        }
+
+        int main() {
+            printf("%d\n", twice(7));
+            printf("%d\n", twice("abc"));
+        }
+    </code>
+</section>
+
+<section>
+    <h1><span>Generics</span></h1>
+    <code class='live rust'>
+        fn twice&lt;T&gt;(x: T) -&gt; T {
+            x + x
+        }
+
+        fn main() {
+            //  println!("{}", twice(7));
+            //  println!("{}", twice("abc"));
+        }
+    </code>
+</section>
+
+<section>
+    <h1><span>Generics</span></h1>
+    <code class='live rust'>
+        fn twice&lt;T: std::num::Int&gt;(x: T) -&gt; T {
+            x + x
+        }
+
+        //  trait Int {
+        //      fn add(self, other: Self) -&gt; Self;
+        //      ...
+        //  }
+
+        fn main() {
+            println!("{}", twice(7));
+            //  println!("{}", twice("abc"));
+        }
+
+        //  impl Int for i32 { ... }
+    </code>
+</section>
+
+<section>
+    <h1><span>Generics</span></h1>
+    <code class='live rust'>
+        fn twice&lt;T: std::num::Int&gt;(x: T) -&gt; T {
+            x + x
+        }
+
+        fn main() {
+            println!("{}", twice(7));
+            println!("{}", twice("abc"));
+        }
+    </code>
+</section>
+
+</section>
+
+
+
+
+
+<!-- immutability -->
+<!-- traits -->
+
+
+<section>
+
+<section>
+    <h1>Extra Slides</h1>
+</section>
+
+<section>
+    <h1><span style='font-size: 90%'>Memory Management</span></h1>
+    <div class='split'>
+    <code class='live rust'>
+        struct Point {
+          x: i32,
+          y: i32,
+        }
+
+        fn main() {
+          let n = 42;
+          println!("{:p}", &amp;n);
+
+          let p =
+            Point { x: 10, y: 20 };
+          println!("{:p}", &amp;p.x);
+        }
+    </code>
+    <code class='live rust'>
+        struct Point {
+          x: i32,
+          y: i32,
+        }
+
+        fn main() {
+          let n = 42;
+          println!("{:p}", &amp;n);
+
+          let p = Box::new(
+            Point { x: 10, y: 20 });
+          println!("{:p}", &amp;p.x);
+        }
+    </code>
+    </div>
+</section>
+
+<section>
+    <h1><span>Generics</span></h1>
+    <div class='split'>
+    <code class='live rust no-exec'>
+        #
+
+
+
+        fn twice&lt;T&gt;(x: T) -&gt; T {
+          x + x
+        }
+
+        fn main() {
+          println!("{}", twice(7));
+        }
+    </code>
+    <code class='live cpp'>
+        #include &lt;stdio.h&gt;
+
+        template&lt;typename T&gt;
+        T twice(T x) {
+          return x + x;
+        }
+
+        int main() {
+          printf("%d\n", twice(7));
+        }
+    </code>
+    </div>
+</section>
+
+<section>
+    <h1><span>Generics</span></h1>
+    <div class='split'>
+    <code class='live rust no-exec'>
+        #
+
+
+
+        fn print_any&lt;T&gt;(x: T) {
+          println!("x = {}", x);
+
+        }
+
+        fn main() {
+          print_any("hello");
+          print_any(7);
+        }
+    </code>
+    <code class='live cpp'>
+        #include &lt;iostream&gt;
+
+        template&lt;typename T&gt;
+        void print_any(T x) {
+          std::cout &lt;&lt; "x = " &lt;&lt; x
+            &lt;&lt; "\n";
+        }
+
+        int main() {
+          print_any("hello");
+          print_any(7);
+        }
+    </code>
+    </div>
+</section>
+
+<section>
+    <h1><span>Generics</span></h1>
+    <code class='live rust'>
+        fn print_any&lt;T&gt;(x: T) {
+            println!("x = {}", x);
+        }
+
+        fn main() {
+            //  print_any("hello");
+            //  print_any(7);
+        }
+    </code>
+</section>
+
+<section>
+    <h1><span>Generics</span></h1>
+    <code class='live rust'>
+        fn print_any&lt;T: std::fmt::Display&gt;(x: T) {
+            println!("x = {}", x);
+        }
+
+        fn main() {
+            print_any("hello");
+            print_any(7);
+        }
+    </code>
+</section>
+
+<section>
+    <h1>Allocation</h1>
+    <code class='live rust'>
+        struct Point { x: i32, y: i32 }
+
+        fn main() {
+            let stack = Point { x: 10, y: 20 };
+            let heap = Box::new(Point { x: 30, y: 40 });
+            println!("stack.x = {}", stack.x);
+            println!("heap.x =  {}", heap.x);
+        }
+    </code>
+</section>
+
+</section>
+
+
+
+<section>
+    <div class='stretch editor-max'>
+    <code class='live rust'>
+        fn main() {
+            println!("Hello, world!");
+        }
+    </code>
+    </div>
+</section>
+
+<section>
+    <div class='stretch editor-max'>
+    <code class='live cpp'>
+        #include &lt;stdio.h&gt;
+        int main() {
+            printf("Hello, world!\n");
+        }
+    </code>
+    </div>
+</section>
+
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+        <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400,700"/>
+        <link rel="stylesheet" href="/web.css"/>
+        <script src="//cdn.jsdelivr.net/ace/1.1.8/min/ace.js" charset="utf-8"></script>
+        <script src="/web.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+            var codes = document.getElementsByTagName('code');
+            for (var i = codes.length - 1; i >= 0; --i) {
+                var codeTag = codes[i];
+                if (!codeTag.classList.contains('live')) {
+                    continue;
+                }
+
+                var code = codeTag.textContent;
+                while (code.startsWith('\n')) {
+                    code = code.substring(1);
+                }
+                var indent = '';
+                while (code[indent.length] == ' ') {
+                    indent += ' ';
+                }
+                code = code.replace('\n' + indent, '\n', 'g').trim();
+                if (code.startsWith('#\n')) {
+                    code = code.substring(2);
+                }
+
+
+                var no_exec = codeTag.classList.contains('no-exec');
+
+                var lang =
+                        codeTag.classList.contains('cpp') ? 'c_cpp' :
+                        codeTag.classList.contains('rust') ? 'rust' :
+                        'rust';
+
+                var iframe = document.createElement('iframe');
+                iframe.classList.add('code');
+                iframe.setAttribute('src', '/web.html');
+                codeTag.parentElement.replaceChild(iframe, codeTag);
+                (function(lang, code, no_exec) {
+                    iframe.contentWindow.addEventListener('DOMContentLoaded', function() {
+                        this.document.body.style.fontSize = '20px';
+                        this.init(lang, code, no_exec);
+                    });
+                })(lang, code, no_exec);
+            }
+
+		</script>
+
+	</body>
+</html>

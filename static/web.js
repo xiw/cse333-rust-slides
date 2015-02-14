@@ -34,15 +34,18 @@ function send(path, data, callback) {
     request.send(JSON.stringify(data));
 }
 
-function evaluate(result, code, version, optimize) {
-    send("/evaluate.json", {code: code, version: version, optimize: optimize},
+function evaluate(editor, result, code, lang, version, optimize) {
+    send("/evaluate.json", {code: code, version: version, optimize: optimize, language: lang},
          function(object) {
-          result.textContent = object["result"];
+             result.textContent = object['result'] || object['error'];
+             editor.resize();
 
+          /*
           var div = document.createElement("div");
           div.className = "message";
           div.textContent = "Program ended.";
           result.appendChild(div);
+          */
     });
 }
 
@@ -132,83 +135,42 @@ function set_keyboard(editor, mode) {
     }
 }
 
-addEventListener("DOMContentLoaded", function() {
-    var evaluateButton = document.getElementById("evaluate");
-    var asmButton = document.getElementById("asm");
-    var irButton = document.getElementById("llvm-ir");
-    var formatButton = document.getElementById("format");
-    var shareButton = document.getElementById("share");
-    var result = document.getElementById("result");
-    var optimize = document.getElementById("optimize");
-    var version = document.getElementById("version");
-    var keyboard = document.getElementById("keyboard");
-    var editor = ace.edit("editor");
+function activate(editor, result, lang, no_exec) {
+    var editor = ace.edit(editor);
     var session = editor.getSession();
 
-    editor.setTheme("ace/theme/github");
-    session.setMode("ace/mode/rust");
+    editor.setTheme("ace/theme/monokai");
+    session.setMode("ace/mode/" + lang);
 
-    var mode = localStorage.getItem("keyboard");
-    if (mode !== null) {
-        set_keyboard(editor, mode);
-        keyboard.value = mode;
+    function run() {
+        evaluate(editor, result, session.getValue(), lang, 'master', '0');
     }
 
-    var query = getQueryParameters();
-    if ("code" in query) {
-        session.setValue(query["code"]);
-    } else {
-        var code = localStorage.getItem("code");
-        if (code !== null) {
-            session.setValue(code);
-        }
+    if (!no_exec) {
+        run();
     }
 
-    if ("version" in query) {
-        version.value = query["version"];
+    function setFocused(f) {
+        editor.setHighlightActiveLine(f);
+        editor.setHighlightGutterLine(f);
+        //editor.setReadOnly(!f);
     }
 
-    if (query["run"] === "1") {
-        evaluate(result, session.getValue(), version.options[version.selectedIndex].text,
-                 optimize.options[optimize.selectedIndex].value);
-    }
+    setFocused(false);
 
-    session.on("change", function() {
-        localStorage.setItem("code", session.getValue());
-    });
+    editor.on('focus', function() { setFocused(true); });
+    editor.on('blur', function() { setFocused(false); });
 
-    keyboard.onchange = function() {
-        var mode = keyboard.options[keyboard.selectedIndex].value;
-        localStorage.setItem("keyboard", mode);
-        set_keyboard(editor, mode);
-    }
-
-    evaluateButton.onclick = function() {
-        evaluate(result, session.getValue(), version.options[version.selectedIndex].text,
-                 optimize.options[optimize.selectedIndex].value);
-    };
-    
     editor.commands.addCommand({
         name: "evaluate",
-        exec: evaluateButton.onclick,
+        exec: run,
         bindKey: {win: "Ctrl-Enter", mac: "Ctrl-Enter"}
     });
+}
 
-    asmButton.onclick = function() {
-        compile("asm", result, session.getValue(), version.options[version.selectedIndex].text,
-                 optimize.options[optimize.selectedIndex].value);
-    };
-
-    irButton.onclick = function() {
-        compile("llvm-ir", result, session.getValue(), version.options[version.selectedIndex].text,
-                 optimize.options[optimize.selectedIndex].value);
-    };
-
-    formatButton.onclick = function() {
-        format(result, session, version.options[version.selectedIndex].text);
-    };
-
-    shareButton.onclick = function() {
-        share(result, version.value, session.getValue());
-    };
-}, false);
+function init(lang, code, no_exec) {
+    var editor = document.getElementById('editor');
+    var result = document.getElementById('result');
+    editor.textContent = code;
+    activate(editor, result, lang, no_exec);
+}

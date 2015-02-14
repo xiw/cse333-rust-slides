@@ -7,13 +7,28 @@ body, #control {
 }
 
 #editor, #result {
-    font-size: 11pt;
+    font-size: 16pt;
     font-family: "Source Code Pro", monospace;
     border: 3px solid #ccc;
 }
 
+html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    align-items: stretch;
+}
+
 #editor {
-    height: 60vh;
+    flex-grow: 1;
     margin: 0;
     border-bottom: 0;
     border-top-left-radius: 5px;
@@ -24,9 +39,16 @@ body, #control {
     overflow: auto;
     max-height: 30vh;
     margin: 0;
+    padding: 3px 7px;
     border-top: 0;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
+
+    color: #ccc;
+}
+
+.ace_hidden-cursors .ace_cursor {
+    display: none;
 }
 
 #result:not(:empty) {

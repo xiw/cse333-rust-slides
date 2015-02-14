@@ -61,8 +61,10 @@ def extractor(key, default, valid):
 @enable_post_cors
 @extractor("version", "master", ("master",))
 @extractor("optimize", "2", ("0", "1", "2", "3"))
-def evaluate(optimize, version):
-    out, _ = execute(version, "/usr/local/bin/evaluate.sh", (optimize,), request.json["code"])
+@extractor("language", "rust", ("rust", "c_cpp"))
+def evaluate(language, optimize, version):
+    print('lang %s, opt %s, ver %s' % (language, optimize, version))
+    out, _ = execute(version, "./bin/evaluate_%s.sh" % language, (optimize,), request.json["code"])
 
     if request.json.get("separate_output") is True:
         split = out.split(b"\xff", 1)
@@ -79,7 +81,7 @@ def evaluate(optimize, version):
 @enable_post_cors
 @extractor("version", "master", ("master",))
 def format(version):
-    out, rc = execute(version, "/usr/local/bin/format.sh", (), request.json["code"])
+    out, rc = execute(version, "./bin/format.sh", (), request.json["code"])
     split = out.split(b"\xff", 1)
     if rc:
         return {"error": split[0].decode()}
@@ -92,7 +94,7 @@ def format(version):
 @extractor("optimize", "2", ("0", "1", "2", "3"))
 @extractor("emit", "asm", ("asm", "llvm-ir"))
 def compile(emit, optimize, version):
-    out, rc = execute(version, "/usr/local/bin/compile.sh", (optimize, emit), request.json["code"])
+    out, rc = execute(version, "./bin/compile.sh", (optimize, emit), request.json["code"])
     split = out.split(b"\xff", 1)
     if rc:
         return {"error": split[0].decode()}
@@ -104,4 +106,5 @@ def compile(emit, optimize, version):
         return {"result": highlight(split[1].decode(), LlvmLexer(), HtmlFormatter(nowrap=True))}
 
 os.chdir(sys.path[0])
-run(host='0.0.0.0', port=80, server='cherrypy')
+#run(host='0.0.0.0', port=80, server='cherrypy')
+run(host='127.0.0.1', port=8080)
