@@ -173,4 +173,8 @@ function init(lang, code, no_exec) {
     var result = document.getElementById('result');
     editor.textContent = code;
     activate(editor, result, lang, no_exec);
+
+    if (window.navigator.userAgent.toLowerCase().indexOf('webkit') != -1) {
+        document.body.parentElement.setAttribute('class', 'chrome');
+    }
 }

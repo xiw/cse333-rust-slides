@@ -12,6 +12,10 @@ body, #control {
     border: 3px solid #ccc;
 }
 
+html.chrome #editor, html.chrome #result {
+    font-size: 24pt;
+}
+
 html {
     height: 100%;
     margin: 0;
