@@ -160,126 +160,6 @@
     </ul>
 </section>
 
-<section>
-    <h1>Hello 42</h1>
-    <div class='split'>
-    <code class='live rust'>
-        #
-
-
-        fn main() {
-          let s: &amp;str = "Hello";
-          let x: u32 = 42;
-
-          println!("{}, {}!", s, x);
-
-        }
-    </code>
-
-    <code class='live cpp'>
-        #include &lt;stdio.h&gt;
-
-        int main() {
-          const char *s = "Hello";
-          int x = 42;
-
-          printf("%s, %d!\n", s, x);
-          return 0;
-        }
-    </code>
-    </div>
-</section>
-
-<section>
-    <h1>Functions</h1>
-    <div class='split'>
-    <code class='live rust'>
-        #
-
-
-        fn increment(x: u32) -&gt; u32 {
-          x + 1
-        }
-
-        fn main() {
-          println!("1 + 1 is {}",
-                   increment(1));
-
-        }
-    </code>
-
-    <code class='live cpp'>
-        #include &lt;stdio.h&gt;
-
-        int increment(int x) {
-          return x + 1;
-        }
-
-        int main() {
-          printf("1 + 1 is %d\n",
-                 increment(1));
-          return 0;
-        }
-    </code>
-    </div>
-</section>
-
-<section>
-    <h1>Structs</h1>
-    <div class='split'>
-    <code class='live rust'>
-        #
-
-
-        struct Point {
-          x: u32,
-          y: u32,
-        }
-
-        fn main() {
-          let p =
-            Point { x: 10, y: 20 };
-
-          println!("p = {}, {}!",
-                   p.x, p.y);
-
-
-        }
-    </code>
-
-    <code class='live cpp'>
-        #include &lt;stdio.h&gt;
-
-        struct Point {
-          unsigned int x;
-          unsigned int y;
-        };
-
-        int main() {
-          Point p = { 10, 20 };
-
-
-          printf("p = %d, %d!\n",
-                 p.x, p.y);
-
-          return 0;
-        }
-    </code>
-    </div>
-</section>
-
-<section>
-    <h1>Type Inference</h1>
-    <code class='live rust'>
-        fn main() {
-            let s = "Hello";
-            let x = 42;
-          
-            println!("{}, {}!", s, x);
-        }
-    </code>
-</section>
-
 </section>
 
 
@@ -398,7 +278,7 @@
 
 <section>
     <h1>Exhaustiveness</h1>
-    <code class='live rust no-exec'>
+    <code class='live rust no-exec pdf-exec'>
         enum Color { RED, GREEN, BLUE }
 
         fn coolness(c: Color) -&gt; i32 {
@@ -470,7 +350,7 @@
 
 <section>
     <h1>Pointer Bugs</h1>
-    <code class='live cpp no-exec'>
+    <code class='live cpp no-exec pdf-exec'>
         #include &lt;vector&gt;
         #include &lt;stdio.h&gt;
 
@@ -538,7 +418,7 @@
 
 <section>
     <h1>Allocation</h1>
-    <code class='live rust no-exec'>
+    <code class='live rust no-exec pdf-exec'>
         fn print_ptr(ptr: &amp;u32) {
             println!("*ptr = {}", *ptr);
         }
@@ -554,7 +434,7 @@
 
 <section>
     <h1>Iterators</h1>
-    <code class='live rust no-exec'>
+    <code class='live rust no-exec pdf-exec'>
         fn main() {
             let mut v = vec![1, 2, 3];
             for x in v.iter() {
@@ -569,7 +449,7 @@
 
 <section>
     <h1>Pointers</h1>
-    <code class='live rust no-exec'>
+    <code class='live rust no-exec pdf-exec'>
         //  enum Option&lt;T&gt; {
         //      Some(T),
         //      None,
@@ -780,189 +660,6 @@
 </section>
 
 
-
-
-
-<!-- immutability -->
-<!-- traits -->
-
-
-<section>
-
-<section>
-    <h1>Extra Slides</h1>
-</section>
-
-<section>
-    <h1><span style='font-size: 90%'>Memory Management</span></h1>
-    <div class='split'>
-    <code class='live rust'>
-        struct Point {
-          x: i32,
-          y: i32,
-        }
-
-        fn main() {
-          let n = 42;
-          println!("{:p}", &amp;n);
-
-          let p =
-            Point { x: 10, y: 20 };
-          println!("{:p}", &amp;p.x);
-        }
-    </code>
-    <code class='live rust'>
-        struct Point {
-          x: i32,
-          y: i32,
-        }
-
-        fn main() {
-          let n = 42;
-          println!("{:p}", &amp;n);
-
-          let p = Box::new(
-            Point { x: 10, y: 20 });
-          println!("{:p}", &amp;p.x);
-        }
-    </code>
-    </div>
-</section>
-
-<section>
-    <h1><span>Generics</span></h1>
-    <div class='split'>
-    <code class='live rust no-exec'>
-        #
-
-
-
-        fn twice&lt;T&gt;(x: T) -&gt; T {
-          x + x
-        }
-
-        fn main() {
-          println!("{}", twice(7));
-        }
-    </code>
-    <code class='live cpp'>
-        #include &lt;stdio.h&gt;
-
-        template&lt;typename T&gt;
-        T twice(T x) {
-          return x + x;
-        }
-
-        int main() {
-          printf("%d\n", twice(7));
-        }
-    </code>
-    </div>
-</section>
-
-<section>
-    <h1><span>Generics</span></h1>
-    <div class='split'>
-    <code class='live rust no-exec'>
-        #
-
-
-
-        fn print_any&lt;T&gt;(x: T) {
-          println!("x = {}", x);
-
-        }
-
-        fn main() {
-          print_any("hello");
-          print_any(7);
-        }
-    </code>
-    <code class='live cpp'>
-        #include &lt;iostream&gt;
-
-        template&lt;typename T&gt;
-        void print_any(T x) {
-          std::cout &lt;&lt; "x = " &lt;&lt; x
-            &lt;&lt; "\n";
-        }
-
-        int main() {
-          print_any("hello");
-          print_any(7);
-        }
-    </code>
-    </div>
-</section>
-
-<section>
-    <h1><span>Generics</span></h1>
-    <code class='live rust'>
-        fn print_any&lt;T&gt;(x: T) {
-            println!("x = {}", x);
-        }
-
-        fn main() {
-            //  print_any("hello");
-            //  print_any(7);
-        }
-    </code>
-</section>
-
-<section>
-    <h1><span>Generics</span></h1>
-    <code class='live rust'>
-        fn print_any&lt;T: std::fmt::Display&gt;(x: T) {
-            println!("x = {}", x);
-        }
-
-        fn main() {
-            print_any("hello");
-            print_any(7);
-        }
-    </code>
-</section>
-
-<section>
-    <h1>Allocation</h1>
-    <code class='live rust'>
-        struct Point { x: i32, y: i32 }
-
-        fn main() {
-            let stack = Point { x: 10, y: 20 };
-            let heap = Box::new(Point { x: 30, y: 40 });
-            println!("stack.x = {}", stack.x);
-            println!("heap.x =  {}", heap.x);
-        }
-    </code>
-</section>
-
-</section>
-
-
-
-<section>
-    <div class='stretch editor-max'>
-    <code class='live rust'>
-        fn main() {
-            println!("Hello, world!");
-        }
-    </code>
-    </div>
-</section>
-
-<section>
-    <div class='stretch editor-max'>
-    <code class='live cpp'>
-        #include &lt;stdio.h&gt;
-        int main() {
-            printf("Hello, world!\n");
-        }
-    </code>
-    </div>
-</section>
-
-
 			</div>
 
 		</div>
@@ -1022,6 +719,11 @@
 
 
                 var no_exec = codeTag.classList.contains('no-exec');
+                var pdf_exec = codeTag.classList.contains('pdf-exec');
+
+                if (pdf_exec && window.location.search.indexOf('print-pdf') != -1) {
+                    no_exec = false;
+                }
 
                 var lang =
                         codeTag.classList.contains('cpp') ? 'c_cpp' :
